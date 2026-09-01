@@ -19,6 +19,8 @@ elif [ -f "$(dirname "$0")/.env" ]; then
     set +a
 fi
 
+sleep 5
+
 # Add Qdrant primary node to /etc/hosts if not present
 grep -q "${QDRANT_PRIMARY_NODE}" /etc/hosts || echo "127.0.0.1 ${QDRANT_PRIMARY_NODE}" | sudo tee -a /etc/hosts > /dev/null
 
