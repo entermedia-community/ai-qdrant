@@ -29,7 +29,9 @@ mkdir -p "$LOGFILE"
 echo -e "\nStarting Qdrant with bootstrap to primary node ${QDRANT_PRIMARY_NODE} and local uri ${VPNHOST}:6335..."
 
 pkill qdrant
-
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cp -rp "$SCRIPT_DIR"/config/config.yaml /qdrant/config/config.yaml
+cd /qdrant
 ./qdrant --config-path ./config/config.yaml  \
          --bootstrap http://$QDRANT_PRIMARY_NODE:6335  \
          --uri http://$VPNHOST:16335   \
