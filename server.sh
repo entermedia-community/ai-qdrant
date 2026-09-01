@@ -1,5 +1,12 @@
 #!/bin/bash
+
+# Qdrant launcher script for vast servers
+# All configurations are loaded from .env file in the same directory as this script or in /root/.env
+
 set -euo pipefail
+
+#Kill any existing qdrant process
+pkill qdrant || true
 
 # Load environment variables if .env exists
 if [ -f "/root/.env" ]; then
@@ -13,7 +20,7 @@ elif [ -f "$(dirname "$0")/.env" ]; then
 fi
 
 LOGFILE=/root/logs/qdrant
-mkdir -p mkdir -p "$LOGFILE"
+mkdir -p "$LOGFILE"
 
 echo -e "\nStarting Qdrant with bootstrap to primary node ${QDRANT_PRIMARY_NODE} and local uri ${VPNHOST}:6335..."
 
