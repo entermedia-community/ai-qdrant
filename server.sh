@@ -19,6 +19,10 @@ elif [ -f "$(dirname "$0")/.env" ]; then
     set +a
 fi
 
+# Add Qdrant primary node to /etc/hosts if not present
+grep -q "${QDRANT_PRIMARY_NODE}" /etc/hosts || echo "127.0.0.1 ${QDRANT_PRIMARY_NODE}" | sudo tee -a /etc/hosts > /dev/null
+
+
 LOGFILE=/root/logs/qdrant
 mkdir -p "$LOGFILE"
 
@@ -27,6 +31,6 @@ echo -e "\nStarting Qdrant with bootstrap to primary node ${QDRANT_PRIMARY_NODE}
 pkill qdrant
 
 ./qdrant --config-path ./config/config.yaml  \
-         --bootstrap http://$QDRANTHOME:6335  \
+         --bootstrap http://$QDRANT_PRIMARY_NODE:6335  \
          --uri http://$VPNHOST:16335   \
          2>&1 | multilog t s5000000 n3 "$LOGFILE" &
